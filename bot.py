@@ -66,3 +66,21 @@ app = ApplicationBuilder().token("BOT_TOKEN").build()
 app.add_handler(CommandHandler("start", start))
 app.add_handler(CommandHandler("pi", pi_price))
 app.run_polling()
+import requests
+
+def get_okx_pi_klines():
+    url = "https://www.okx.com/api/v5/market/candles"
+    params = {
+        "instId": "PI-USDT",
+        "bar": "1m",  # 1 dakikalık veri
+        "limit": 10   # Son 10 mum verisi
+    }
+    response = requests.get(url, params=params)
+    if response.status_code == 200:
+        data = response.json()["data"]
+        for candle in data:
+            print(f"Zaman: {candle[0]}, Açılış: {candle[1]}, Kapanış: {candle[4]}")
+    else:
+        print("Veri alınamadı:", response.text)
+
+get_okx_pi_klines()
