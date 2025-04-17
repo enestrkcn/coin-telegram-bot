@@ -3,7 +3,7 @@ from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 import requests
 
 # Token'ı buraya ekle
-TOKEN = "7887984646 : AAFuu5cE2YDXk8YHjwiUxM1-DeiDnd8FD6w"
+TOKEN = "7887984646:AAFuu5cE2YDXk8YHjwiUxM1-DeiDnd8FD6w"
 
 # Coin fiyatını getiren fonksiyon
 def get_coin_price(coin_id):
