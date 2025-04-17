@@ -37,3 +37,32 @@ app.add_handler(CommandHandler("price", price))
 
 # Botu başlat
 app.run_polling()
+from telegram import Update
+from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+import requests
+
+# Pi Coin fiyatını OKX'ten çekiyoruz
+def get_pi_price():
+    url = "https://www.okx.com/api/v5/market/ticker?instId=PI-USDT"
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        price = data['data'][0]['last']
+        return f"Pi Coin fiyatı: ${price}"
+    else:
+        return "Pi Coin fiyatı alınamadı."
+
+# /start komutu
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("Merhaba! Komutlara hazırım. /pi yazarak Pi Coin fiyatını alabilirsin.")
+
+# /pi komutu
+async def pi_price(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    price = get_pi_price()
+    await update.message.reply_text(price)
+
+# Botu çalıştır
+app = ApplicationBuilder().token("BOT_TOKEN").build()
+app.add_handler(CommandHandler("start", start))
+app.add_handler(CommandHandler("pi", pi_price))
+app.run_polling()
